@@ -70,28 +70,11 @@ sudo nano /etc/group
 ## Controlling the Panda
 
 ### franka_pipeline (Recommended)
-I have developed the [franka_pipeline](https://github.com/David0tt/franka_pipeline) package for fast iteration in our robotic setup.
-To build (run from the root of the current ThesisInformation repository):
+I have developed the [nexus_robostack](https://github.com/David0tt/nexus_robostack) package for fast iteration in our robotic setup. Refer to the instructions there on how to get set up on the robotic system. 
 
-    DOCKER_BUILDKIT=1 docker build --ssh default -t frankapipeline docker/docker_frankapipeline
-    docker build -t deoxys_autostart docker/docker_deoxys/
+**Always stay close to the robots emergency buttons when running new code!**
 
-Start up the robot, unlock the joints, and enable FCI (see the sections above). Then run the containers for deoxys backend and franka_pipeline frontend:
-
-    docker run -it --rm -v /cshome:/cshome -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --net=host --privileged deoxys_autostart
-    docker run -it --rm --runtime=nvidia --gpus all -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix -v /home/ott/datasets/:/datasets -v /dev:/dev --net=host --privileged frankapipeline
-
-Open a terminal in the frankapipeline container (either using the existing one, vscode remote extension or starting a new terminal with `docker exec -it [CONTAINER_ID] bin/bash`). In it, you should now be able to run
-
-    python main.py # This should allow remote control with a SpaceMouse in simulation
-    python main.py --real-robot # This should allow remote control with a SpaceMouse on the real robot
-    python main.py --osc-demo --real-robot # If no SpaceMouse is available    
-
-Always stay close to the emergency buttons when running new code!
-For further instructions refer to the README of [franka_pipeline](https://github.com/David0tt/franka_pipeline). 
-
-
-### Deoxys
+<!-- ### Deoxys
 For many applications it is sufficient to use [deoxys](https://github.com/UT-Austin-RPL/deoxys_control/) as a lightweight control stack. This repository provides a containerized installation. First, build the container:
 
     docker build -t deoxys docker/docker_deoxys/
@@ -108,7 +91,7 @@ If everything works, a `tmux` session with three panes should open; the right pa
 
 Always stay close to the emergency buttons when running new code! You can now try all the examples in `examples/`. You can start your development based on deoxys, either in this container, by building upon this container, or in a different environment where you just build the deoxys Python frontend. A nice property of the container is that you can use it standalone for controlling the arm using the deoxys "server-side", and use the deoxys client-side in a different environment (e.g. another container or conda environment) without building the whole deoxys (i.e. building deoxys with only `make -j build_deoxys=1`). An example of this pattern can be seen in the [franka_pipeline](https://github.com/David0tt/franka_pipeline) package.
 
-(If you are doing something in the containers, make sure to keep your work saved, or potentially run the container without `--rm`)
+(If you are doing something in the containers, make sure to keep your work saved, or potentially run the container without `--rm`) -->
 
 
 # Franka Emika Panda Overview
